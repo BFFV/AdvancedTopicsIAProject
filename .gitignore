@@ -189,8 +189,5 @@ Icon
 # Thumbnails
 ._*
 
-# Generated images
-generated/
-
 # Token
 hugging_face_token.txt
