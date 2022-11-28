@@ -1,25 +1,22 @@
 import numpy as np
 import os
 from PIL import Image
+from sys import argv
 
 # Image settings
 size = (512, 512)
 center_crop = False
-rotate = False
-interpolation = {
-    'bilinear': Image.Resampling.BILINEAR,
-    'bicubic': Image.Resampling.BICUBIC,
-    'lanczos': Image.Resampling.LANCZOS,
-}['bicubic']
 
 # Dataset folder
-data_folder = 'pixelated'
-image_names = sorted(os.listdir(f'../data/{data_folder}/original'))
+if len(argv) < 2:
+    raise Exception('Expected name for folder with the images!')
+data_folder = argv[1]
+image_names = sorted(os.listdir(f'data/{data_folder}'))
 
 # Transform images
 for img_name in image_names:
     # Get image
-    image = Image.open(os.path.join(f'../data/{data_folder}/original', img_name))
+    image = Image.open(os.path.join(f'data/{data_folder}', img_name))
 
     # Convert image to RGB if needed
     if not image.mode == 'RGB':
@@ -37,16 +34,12 @@ for img_name in image_names:
         )
         img = img[(h - crop) // 2 : (h + crop) // 2, (w - crop) // 2 : (w + crop) // 2]
 
-    # Rotate image if needed
-    if rotate:
-        img = img.rotate(90)
-
     # Resize image
     image = Image.fromarray(img)
-    image = image.resize(size, resample=interpolation)
+    image = image.resize(size, resample=Image.Resampling.BICUBIC)
 
     # Save new image
-    dataset_path = f'../data/{data_folder}/dataset'
+    dataset_path = f'data/{data_folder}_dataset'
     if not os.path.isdir(dataset_path):
         os.makedirs(dataset_path)
     image.save(f'{dataset_path}/{img_name}')
