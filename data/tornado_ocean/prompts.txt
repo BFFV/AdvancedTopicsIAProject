@@ -1,8 +1,0 @@
-<tornado> on land
-<tornado> on land
-<tornado> on land
-<ocean>
-<ocean>
-<ocean>
-<tornado> on the <ocean>
-<tornado> on the <ocean>
